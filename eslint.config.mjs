@@ -11,35 +11,40 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
 });
 
-export default [...fixupConfigRules(compat.extends(
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-)), {
+export default [
+  ...fixupConfigRules(
+    compat.extends(
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended"
+    )
+  ),
+  {
     plugins: {
-        "@typescript-eslint": fixupPluginRules(typescriptEslint),
-        react: fixupPluginRules(react),
+      "@typescript-eslint": fixupPluginRules(typescriptEslint),
+      react: fixupPluginRules(react),
     },
 
     languageOptions: {
-        globals: {
-            ...globals.node,
-            ...globals.browser,
-        },
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
 
-        parser: tsParser,
+      parser: tsParser,
     },
 
     settings: {
-        react: {
-            version: "detect",
-        },
+      react: {
+        version: "detect",
+      },
     },
 
-    rules: {},
-}];
+    rules: { "react/react-in-jsx-scope": "off" },
+  },
+];

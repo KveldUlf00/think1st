@@ -10,6 +10,8 @@
     "@types/node": "^16.18.103",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "axios": "^1.7.2",
+    "json-server": "^1.0.0-beta.1",
     "node-sass": "^9.0.0",
     "notistack": "^3.0.1",
     "react": "^18.3.1",
