@@ -26,12 +26,6 @@ export default function MainForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // if (password !== confirmPassword) {
-    //   setErrors(["Password and confirm password must match"]);
-    //   setIsSubmitting(false);
-    //   return;
-    // }
-
     // TODO: submit to server
     // ...
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -82,7 +76,6 @@ export default function MainForm() {
           min={8}
           max={100}
         />
-        <span>sss</span>
         <button
           type="submit"
           disabled={isSubmitting}
