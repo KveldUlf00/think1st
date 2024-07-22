@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./styles/index.scss";
+import "./styles/index.css";
 import App from "./pages/App";
 import { SnackbarProvider } from "notistack";
 
-// To run fake REST API service:
-
-// ### `npx json-server fakeApi/db.json`
+// styles:
+// npx tailwindcss -i ./src/styles/index.css -o ./src/styles/output.css --watch
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

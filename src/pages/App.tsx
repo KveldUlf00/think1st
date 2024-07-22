@@ -1,11 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import MainForm from './MainForm';
+import MainForm from "./MainForm";
 
 function App() {
   return (
-    <div className="main-container">
-      <span>some text...</span>
+    <div className="w-full h-screen bg-think-bg text-think-color flex justify-center items-center">
       <MainForm />
     </div>
   );
