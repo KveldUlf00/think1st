@@ -2,57 +2,138 @@ import React, { useState } from "react";
 
 import CustomInput from "../components/CustomInput";
 import CustomSlider from "../components/CustomSlider";
-import { useSnackbar } from "notistack";
-import axios from "axios";
+import CustomUploader from "../components/CustomUploader";
+import CustomCalendar from "../components/CustomCalendar";
 
-// useEffect(() => {
-//   const url = "http://localhost:3000/posts";
-//   axios.get(url).then((res) => {
-//     console.log("res", res);
-//     console.log("res.data", res.data);
-//   });
-// }, []);
+type ErrorObject = {
+  [key: string]: string;
+};
+
+// {errors.length > 0 && (
+//   <ul>
+//     {errors.map((error) => (
+//       <li
+//         key={error}
+//         className="bg-red-100 text-red-500 px-4 py-2 rounded"
+//       >
+//         {error}
+//       </li>
+//     ))}
+//   </ul>
+// )}
 
 export default function MainForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState(8);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<ErrorObject[]>([]);
+
+  const resetFields = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setAge(8);
+    setPhoto(null);
+    setSelectedDate(null);
+    setSelectedTime("");
+    setIsSubmitting(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // TODO: submit to server
-    // ...
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    let anyError = false;
 
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setAge(8);
-    setIsSubmitting(false);
+    if (firstName === "") {
+      setErrors((origin) => [
+        ...origin,
+        { firstName: "First name is required" },
+      ]);
+      anyError = true;
+    }
+
+    if (lastName === "") {
+      setErrors((origin) => [
+        ...origin,
+        { lastName: "First name is required" },
+      ]);
+      anyError = true;
+    }
+
+    if (email === "") {
+      // check if has @
+      setErrors((origin) => [
+        ...origin,
+        { email: "Email address is required" },
+      ]);
+      anyError = true;
+    }
+
+    if (photo === null) {
+      setErrors((origin) => [...origin, { photo: "Photo is required" }]);
+      anyError = true;
+    }
+
+    if (selectedDate === null) {
+      setErrors((origin) => [
+        ...origin,
+        { selectedDate: "Please select date." },
+      ]);
+      anyError = true;
+    }
+
+    if (selectedTime === "") {
+      setErrors((origin) => [
+        ...origin,
+        { selectedDate: "Please select time." },
+      ]);
+      anyError = true;
+    }
+
+    if (anyError) {
+      resetFields();
+    } else {
+      const [hours, minutes] = selectedTime.split(":").map(Number);
+      const wholeDate = new Date(
+        Date.UTC(
+          selectedDate!.getUTCFullYear(),
+          selectedDate!.getUTCMonth(),
+          selectedDate!.getUTCDate() + 1,
+          hours,
+          minutes
+        )
+      );
+
+      const dataToSubmit = {
+        firstName,
+        lastName,
+        email,
+        age,
+        photo,
+        wholeDate,
+      };
+
+      console.log("dataToSubmit", dataToSubmit);
+
+      // TODO: submit to server
+      // ...
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      resetFields();
+    }
   };
 
   return (
-    <div className="max-w-md m-auto">
+    <div className="w-1/4 mx-auto py-12">
       <p className="text-2xl font-medium">Personal info</p>
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
-        {errors.length > 0 && (
-          <ul>
-            {errors.map((error) => (
-              <li
-                key={error}
-                className="bg-red-100 text-red-500 px-4 py-2 rounded"
-              >
-                {error}
-              </li>
-            ))}
-          </ul>
-        )}
         <CustomInput
           label="first name"
           value={firstName}
@@ -76,10 +157,21 @@ export default function MainForm() {
           min={8}
           max={100}
         />
+        <CustomUploader label="photo" photo={photo} onChange={setPhoto} />
+
+        <p className="text-2xl font-medium">Your workout</p>
+
+        <CustomCalendar
+          label="Date"
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
+        />
         <button
           type="submit"
           disabled={isSubmitting}
-          className="bg-think-purple text-white disabled:bg-gray-500 py-2 rounded"
+          className="bg-think-purple hover:bg-think-dark-purple text-white disabled:bg-gray-500 mt-4 py-2 rounded"
         >
           Send Application
         </button>

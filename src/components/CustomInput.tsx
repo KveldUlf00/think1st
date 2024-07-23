@@ -11,13 +11,11 @@ export default function CustomInput({
   onChange,
   type,
 }: CustomInputType) {
-  // const className =
-  //   "px-4 py-2 rounded-lg border border-think-gray focus-visible:border-red-500 focus-visible:ring focus-visible:ring-red-200" as const;
   const className =
     "px-4 py-2 rounded-lg border-solid border border-think-gray focus-visible:outline-2 focus-visible:outline-think-purple focus-visible:bg-think-light-gray" as const;
 
   return (
-    <div className="flex flex-col my-1 mx-2">
+    <div className="flex flex-col my-1">
       <span className="capitalize pb-1">{label}</span>
       <input
         value={value}
