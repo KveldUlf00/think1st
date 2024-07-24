@@ -1,21 +1,21 @@
-import React, { useState, useRef, useEffect, ChangeEventHandler } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import ErrorMessage from "./ErrorMessage";
 import FieldHeader from "./FieldHeader";
 
-type CustomUploaderType = {
+type AppUploaderType = {
   label: string;
   photo: File | null;
   onChange: (file: File | null) => void;
   errors?: string | null;
 };
 
-export default function CustomUploader({
+export default function AppUploader({
   label,
   photo,
   onChange,
   errors,
-}: CustomUploaderType) {
+}: AppUploaderType) {
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -60,7 +60,7 @@ export default function CustomUploader({
   }, [photo]);
 
   return (
-    <div className="flex flex-col my-1">
+    <div className="flex flex-col mt-6 mb-2">
       <FieldHeader label={label} />
       <div
         className="w-full h-24 rounded-lg border-solid border border-think-gray flex items-center justify-center bg-white relative"

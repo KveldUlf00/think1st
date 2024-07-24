@@ -5,21 +5,21 @@ import FieldHeader from "./FieldHeader";
 
 const CustomStyledSlider = styled(Slider)(() => ({
   "& .MuiSlider-valueLabel": {
-    top: 60,
+    top: 50,
     backgroundColor: "#fff",
     borderRadius: "0.25rem",
     border: "1px solid #CBB6E5",
     color: "#761BE4",
     fontWeight: 500,
+    fontSize: ".75rem",
     padding: ".25rem .75rem",
-    zIndex: "40",
+    transform: "translateY(-100%) scale(1)",
 
     "&::before": {
       bottom: "unset",
       top: "-.5rem",
       borderTop: "1px solid #CBB6E5",
       borderLeft: "1px solid #CBB6E5",
-      zIndex: "2",
     },
   },
   "& .MuiSlider-thumbSizeMedium": {
@@ -37,7 +37,7 @@ const CustomStyledSlider = styled(Slider)(() => ({
   },
 }));
 
-type CustomSliderType = {
+type AppSliderType = {
   label: string;
   value: number;
   onChange: (value: React.SetStateAction<number>) => void;
@@ -45,13 +45,13 @@ type CustomSliderType = {
   max: number;
 };
 
-export default function CustomSlider({
+export default function AppSlider({
   label,
   value,
   onChange,
   min,
   max,
-}: CustomSliderType) {
+}: AppSliderType) {
   return (
     <div className="flex flex-col my-1">
       <FieldHeader label={label} />

@@ -8,7 +8,6 @@ import { SnackbarProvider } from "notistack";
 // npx tailwindcss -i ./src/styles/index.css -o ./src/styles/output.css --watch
 
 // TODO mobile view
-// TODO hide somewhere this secret key
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

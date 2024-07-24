@@ -3,7 +3,7 @@ import { ChangeEventHandler } from "react";
 import ErrorMessage from "./ErrorMessage";
 import FieldHeader from "./FieldHeader";
 
-type CustomInputType = {
+type AppInputType = {
   label: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement> | undefined;
@@ -11,13 +11,13 @@ type CustomInputType = {
   errors?: string | null;
 };
 
-export default function CustomInput({
+export default function AppInput({
   label,
   value,
   onChange,
   type,
   errors,
-}: CustomInputType) {
+}: AppInputType) {
   const baseClassName =
     "px-4 py-2 outline-none rounded-lg border border-1 border-solid focus-visible:bg-think-light-gray" as const;
   const activeClassName =

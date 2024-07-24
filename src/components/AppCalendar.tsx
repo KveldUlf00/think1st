@@ -16,11 +16,17 @@ import { useSnackbar } from "notistack";
 
 import ErrorMessage from "./ErrorMessage";
 import FieldHeader from "./FieldHeader";
+import TimeParcel from "./TimeParcel";
 import { getHolidays } from "../api/userService";
 import { type Holiday, DateType } from "../api/types";
-import { Circle, Info, LeftArrow, RightArrow } from "../assets/shapes";
+import {
+  CircleIcon,
+  InfoIcon,
+  LeftArrowIcon,
+  RightArrowIcon,
+} from "../assets/shapes";
 
-type CustomCalendarType = {
+type AppCalendarType = {
   label: string;
   selectedDate: Date | null;
   setSelectedDate: (date: Date | null) => void;
@@ -29,16 +35,14 @@ type CustomCalendarType = {
   errors?: string | null;
 };
 
-// TODO maybe change name
-
-export default function CustomCalendar({
+export default function AppCalendar({
   label,
   selectedDate,
   setSelectedDate,
   selectedTime,
   setSelectedTime,
   errors,
-}: CustomCalendarType) {
+}: AppCalendarType) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [loadingHolidays, setLoadingHolidays] = useState(true);
@@ -153,13 +157,13 @@ export default function CustomCalendar({
       <div className="flex">
         <div>
           <FieldHeader label={label} />
-          <div className="p-4 w-full bg-white relative rounded-lg border-solid border border-think-gray">
+          <div className="p-4 w-think-calendar-w h-think-calendar-h bg-white relative rounded-lg border-solid border border-think-gray">
             <div className="flex items-center justify-between mb-2">
               <button
                 onClick={(e) => handleMonthChange(e, "prev")}
                 className="p-1 hover:animate-pulse"
               >
-                <LeftArrow />
+                <LeftArrowIcon />
               </button>
               <span className="text-base font-medium">
                 {format(currentDate, "MMMM yyyy")}
@@ -168,7 +172,7 @@ export default function CustomCalendar({
                 onClick={(e) => handleMonthChange(e, "next")}
                 className="p-1 hover:animate-pulse"
               >
-                <RightArrow />
+                <RightArrowIcon />
               </button>
             </div>
 
@@ -202,7 +206,7 @@ export default function CustomCalendar({
             {loadingHolidays && (
               <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
                 <div className="flex justify-center align-center">
-                  <Circle />
+                  <CircleIcon />
                   <p className="ml-2 text-lg font-medium">
                     Processing holiday data...
                   </p>
@@ -212,23 +216,22 @@ export default function CustomCalendar({
           </div>
         </div>
         {selectedDate !== null && chosenObservance === null && (
-          <div className="ml-4">
+          <div className="ml-6">
             <FieldHeader label="time" />
             {possibleTimes.map((time) => (
-              <div
-                className={`rounded-lg border-solid border border-think-gray py-1 px-3 bg-white mb-2 cursor-pointer ${selectedTime === time && "outline outline-2 outline-think-purple"}`}
+              <TimeParcel
                 key={`key-${time}`}
+                time={time}
+                selectedTime={selectedTime}
                 onClick={() => setSelectedTime(time)}
-              >
-                {time}
-              </div>
+              />
             ))}
           </div>
         )}
       </div>
       {chosenObservance !== null && (
         <div className="mt-2 flex items-center">
-          <Info />
+          <InfoIcon />
           <span className="pl-2">It is {chosenObservance.name}.</span>
         </div>
       )}
