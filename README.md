@@ -28,6 +28,10 @@ What you can catch is sometimes the line-height is slightly different from that 
 
 In general, I mostly used tailwind's defaults, but for some values I implemented my own variables for styles (these are available in **tailwind.config.js**).
 
+**Sometimes** url calls require enabled CORS
+
+**Hour problem** - an observant tester will notice that in the request flies an hour reduced by 2 with respect to the selected one. This happens by converting the target date by .toISOString(), which converts the time to this universal UTC. I don't consider this a bug, just a field for future determination of what time we are referring to.
+
 **What's more**, fields of Input type have only validation for the number of characters, there can be numbers in them, for example. This was done because of the lack of clear information in the task content.
 
 **One last very important thing!**
