@@ -18,7 +18,7 @@ import ErrorMessage from "./ErrorMessage";
 import FieldHeader from "./FieldHeader";
 import TimeParcel from "./TimeParcel";
 import { getHolidays } from "../api/userService";
-import { type Holiday, DateType } from "../api/types";
+import { type Holiday, DateType } from "../types/types";
 import {
   CircleIcon,
   InfoIcon,
@@ -150,7 +150,7 @@ export default function AppCalendar({
     };
 
     fetchHolidays();
-  }, []);
+  }, [enqueueSnackbar]);
 
   return (
     <div className="flex flex-col my-1">
