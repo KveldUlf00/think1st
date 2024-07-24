@@ -7,8 +7,6 @@ import { SnackbarProvider } from "notistack";
 // styles:
 // npx tailwindcss -i ./src/styles/index.css -o ./src/styles/output.css --watch
 
-// TODO mobile view
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

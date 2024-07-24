@@ -136,21 +136,23 @@ export default function MainForm() {
 
     try {
       const result = await postFormData(dataToSubmit);
-      console.log("Form data submitted successfully:", result);
       enqueueSnackbar("Form data submitted successfully.", {
         variant: "success",
       });
     } catch (error) {
       console.error("Failed to submit form data:", error);
-      enqueueSnackbar("Failed to submit form data.", {
-        variant: "error",
-      });
+      enqueueSnackbar(
+        "Failed to submit form data. Please specify correct url.",
+        {
+          variant: "error",
+        }
+      );
     }
     resetFields();
   };
 
   return (
-    <div className="w-think-w mx-auto mt-24 mb-32">
+    <div className="w-think-sm-w sm:w-think-w mx-auto mt-24 mb-32">
       <p className="text-2xl font-medium mb-4">Personal info</p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">

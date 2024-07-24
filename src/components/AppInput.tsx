@@ -19,11 +19,11 @@ export default function AppInput({
   errors,
 }: AppInputType) {
   const baseClassName =
-    "px-4 py-2 outline-none rounded-lg border border-1 border-solid focus-visible:bg-think-light-gray" as const;
+    "h-12 px-3 py-2 font-medium outline-none rounded-lg border border-1 border-solid border-think-gray bg-white" as const;
   const activeClassName =
-    "border-think-gray focus-visible:border-2 focus-visible:border-think-purple" as const;
+    "focus-visible:bg-think-light-gray focus-visible:border-2 focus-visible:border-think-purple" as const;
   const errorClassName =
-    "border-2 border-think-red !bg-think-light-red focus-visible:border-think-red" as const;
+    "border-2 border-think-red bg-think-light-red focus-visible:border-think-red" as const;
 
   const inputClassName = `${baseClassName} ${errors ? errorClassName : activeClassName}`;
 

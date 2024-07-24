@@ -86,7 +86,9 @@ export default function AppUploader({
             >
               Upload a file
             </span>{" "}
-            <span className="text-think-dark-gray">or drag and drop here</span>
+            <span className="hidden sm:inline-block text-think-dark-gray">
+              or drag and drop here
+            </span>
             <input
               type="file"
               accept="image/*"
