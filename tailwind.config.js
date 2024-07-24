@@ -12,6 +12,7 @@ module.exports = {
         "think-dark-gray": "#898DA9",
         "think-light-gray": "#FAF9FA",
         "think-red": "#ED4545",
+        "think-light-red": "#FEECEC",
       },
     },
   },

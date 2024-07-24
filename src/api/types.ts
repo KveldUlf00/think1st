@@ -16,3 +16,13 @@ export interface Holiday {
   type: string;
   year: number;
 }
+
+export type ErrorObject = {
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  age?: string | null;
+  photo?: string | null;
+  selectedDate?: string | null;
+  selectedTime?: string | null;
+};
