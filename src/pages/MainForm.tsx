@@ -1,13 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useSnackbar } from "notistack";
 
 import CustomInput from "../components/CustomInput";
 import CustomSlider from "../components/CustomSlider";
 import CustomUploader from "../components/CustomUploader";
 import CustomCalendar from "../components/CustomCalendar";
+import SubmitButton from "../components/SubmitButton";
 
-type ErrorObject = {
-  [key: string]: string;
-};
+import { isValidEmail } from "../utils/emailValidation";
+import type { ErrorObject } from "../api/types";
 
 // {errors.length > 0 && (
 //   <ul>
@@ -32,7 +33,55 @@ export default function MainForm() {
   const [selectedTime, setSelectedTime] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState<ErrorObject[]>([]);
+  const [errors, setErrors] = useState<ErrorObject>({});
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const noErrors = useMemo(() => {
+    if (Object.keys(errors).length === 0) {
+      return true;
+    }
+    return Object.values(errors).every((value) => value === null);
+  }, [errors]);
+
+  const validateFields = (
+    field: keyof ErrorObject,
+    value: string | File | Date | null
+  ) => {
+    const newErrors: ErrorObject = { ...errors };
+
+    switch (field) {
+      case "firstName":
+        newErrors.firstName = value === "" ? "First name is required" : null;
+        break;
+      case "lastName":
+        newErrors.lastName = value === "" ? "Last name is required" : null;
+        break;
+      case "email":
+        if (value === "") {
+          newErrors.email = "Email address is required";
+        } else if (typeof value === "string" && !isValidEmail(value)) {
+          newErrors.email =
+            "Please use correct formatting. Example: address@email.com";
+        } else {
+          newErrors.email = null;
+        }
+        break;
+      case "photo":
+        newErrors.photo = value === null ? "Photo is required" : null;
+        break;
+      case "selectedDate":
+        newErrors.selectedDate = value === null ? "Please select a date" : null;
+        break;
+      case "selectedTime":
+        newErrors.selectedTime = value === "" ? "Please select a time" : null;
+        break;
+      default:
+        break;
+    }
+
+    setErrors(newErrors);
+  };
 
   const resetFields = () => {
     setFirstName("");
@@ -45,7 +94,7 @@ export default function MainForm() {
     setIsSubmitting(false);
   };
 
-  const canSubmit = useMemo(() => {
+  const inputsAreNotEmpty = useMemo(() => {
     return (
       firstName !== "" &&
       lastName !== "" &&
@@ -61,84 +110,52 @@ export default function MainForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    let anyError = false;
+    const newErrors: ErrorObject = {};
 
-    if (firstName === "") {
-      setErrors((origin) => [
-        ...origin,
-        { firstName: "First name is required" },
-      ]);
-      anyError = true;
+    if (firstName === "") newErrors.firstName = "First name is required";
+    if (lastName === "") newErrors.lastName = "Last name is required";
+    if (email === "") newErrors.email = "Email address is required";
+    else if (!isValidEmail(email))
+      newErrors.email =
+        "Please use correct formatting. Example: address@email.com";
+    if (photo === null) newErrors.photo = "Photo is required";
+    if (selectedDate === null) newErrors.selectedDate = "Please select a date";
+    if (selectedTime === "") newErrors.selectedTime = "Please select a time";
+
+    if (Object.keys(newErrors).length > 0) {
+      enqueueSnackbar("Form is invalid, correct errors.", {
+        variant: "error",
+      });
+      setIsSubmitting(false);
+      return;
     }
 
-    if (lastName === "") {
-      setErrors((origin) => [
-        ...origin,
-        { lastName: "First name is required" },
-      ]);
-      anyError = true;
-    }
+    const [hours, minutes] = selectedTime.split(":").map(Number);
+    const wholeDate = new Date(
+      Date.UTC(
+        selectedDate!.getUTCFullYear(),
+        selectedDate!.getUTCMonth(),
+        selectedDate!.getUTCDate() + 1,
+        hours,
+        minutes
+      )
+    );
 
-    if (email === "") {
-      // check if has @
-      setErrors((origin) => [
-        ...origin,
-        { email: "Email address is required" },
-      ]);
-      anyError = true;
-    }
+    const dataToSubmit = {
+      firstName,
+      lastName,
+      email,
+      age,
+      photo,
+      wholeDate,
+    };
 
-    if (photo === null) {
-      setErrors((origin) => [...origin, { photo: "Photo is required" }]);
-      anyError = true;
-    }
+    console.log("dataToSubmit", dataToSubmit);
 
-    if (selectedDate === null) {
-      setErrors((origin) => [
-        ...origin,
-        { selectedDate: "Please select date." },
-      ]);
-      anyError = true;
-    }
-
-    if (selectedTime === "") {
-      setErrors((origin) => [
-        ...origin,
-        { selectedDate: "Please select time." },
-      ]);
-      anyError = true;
-    }
-
-    if (anyError) {
-      resetFields();
-    } else {
-      const [hours, minutes] = selectedTime.split(":").map(Number);
-      const wholeDate = new Date(
-        Date.UTC(
-          selectedDate!.getUTCFullYear(),
-          selectedDate!.getUTCMonth(),
-          selectedDate!.getUTCDate() + 1,
-          hours,
-          minutes
-        )
-      );
-
-      const dataToSubmit = {
-        firstName,
-        lastName,
-        email,
-        age,
-        photo,
-        wholeDate,
-      };
-
-      console.log("dataToSubmit", dataToSubmit);
-
-      // TODO: submit to server
-      // ...
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      resetFields();
-    }
+    // TODO: submit to server
+    // ...
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    resetFields();
   };
 
   return (
@@ -149,18 +166,29 @@ export default function MainForm() {
         <CustomInput
           label="first name"
           value={firstName}
-          onChange={setFirstName}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+            validateFields("firstName", e.target.value);
+          }}
+          errors={errors.firstName}
         />
         <CustomInput
           label="last name"
           value={lastName}
-          onChange={setLastName}
+          onChange={(e) => {
+            setLastName(e.target.value);
+            validateFields("lastName", e.target.value);
+          }}
+          errors={errors.lastName}
         />
         <CustomInput
           label="email"
           value={email}
-          onChange={setEmail}
-          type="email"
+          onChange={(e) => {
+            setEmail(e.target.value);
+            validateFields("email", e.target.value);
+          }}
+          errors={errors.email}
         />
         <CustomSlider
           label="age"
@@ -169,24 +197,35 @@ export default function MainForm() {
           min={8}
           max={100}
         />
-        <CustomUploader label="photo" photo={photo} onChange={setPhoto} />
+        <CustomUploader
+          label="photo"
+          photo={photo}
+          onChange={(file) => {
+            setPhoto(file);
+            validateFields("photo", file);
+          }}
+          errors={errors.photo}
+        />
 
         <p className="text-2xl font-medium">Your workout</p>
 
         <CustomCalendar
           label="Date"
           selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
+          setSelectedDate={(date) => {
+            setSelectedDate(date);
+          }}
           selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
+          setSelectedTime={(time) => {
+            setSelectedTime(time);
+            validateFields("selectedTime", time);
+          }}
+          errors={errors.selectedTime}
         />
-        <button
-          type="submit"
-          disabled={!canSubmit || isSubmitting}
-          className="bg-think-purple hover:bg-think-dark-purple text-white disabled:bg-think-gray mt-4 py-2 px-4 rounded font-medium text-lg"
-        >
-          Send Application
-        </button>
+        <SubmitButton
+          label="Send Application"
+          disabled={!inputsAreNotEmpty || isSubmitting || !noErrors}
+        />
       </form>
     </div>
   );

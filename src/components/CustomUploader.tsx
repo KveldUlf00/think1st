@@ -1,17 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ChangeEventHandler } from "react";
 
+import ErrorMessage from "./ErrorMessage";
 import FieldHeader from "./FieldHeader";
 
 type CustomUploaderType = {
   label: string;
   photo: File | null;
-  onChange: (value: React.SetStateAction<File | null>) => void;
+  onChange: (file: File | null) => void;
+  errors?: string | null;
 };
 
 export default function CustomUploader({
   label,
   photo,
   onChange,
+  errors,
 }: CustomUploaderType) {
   const [fileName, setFileName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +69,7 @@ export default function CustomUploader({
       >
         {fileName ? (
           <div className="flex items-center justify-center p-2">
-            <span className="mr-2">{fileName}</span>
+            <span className="mr-2 font-medium leading-5">{fileName}</span>
             <div
               onClick={handleDelete}
               className="relative w-5 h-5 bg-think-dark hover:bg-think-red rounded-full flex items-center justify-center cursor-pointer"
@@ -94,6 +97,7 @@ export default function CustomUploader({
           </div>
         )}
       </div>
+      {errors && <ErrorMessage label={errors} />}
     </div>
   );
 }

@@ -14,6 +14,7 @@ import {
 } from "date-fns";
 import { useSnackbar } from "notistack";
 
+import ErrorMessage from "./ErrorMessage";
 import FieldHeader from "./FieldHeader";
 import { getHolidays } from "../api/userService";
 import { type Holiday, DateType } from "../api/types";
@@ -22,9 +23,10 @@ import { Circle, Info, LeftArrow, RightArrow } from "../assets/shapes";
 type CustomCalendarType = {
   label: string;
   selectedDate: Date | null;
-  setSelectedDate: (value: React.SetStateAction<Date | null>) => void;
+  setSelectedDate: (date: Date | null) => void;
   selectedTime: string;
-  setSelectedTime: (value: React.SetStateAction<string>) => void;
+  setSelectedTime: (time: string) => void;
+  errors?: string | null;
 };
 
 // TODO maybe change name
@@ -35,6 +37,7 @@ export default function CustomCalendar({
   setSelectedDate,
   selectedTime,
   setSelectedTime,
+  errors,
 }: CustomCalendarType) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
@@ -42,10 +45,6 @@ export default function CustomCalendar({
   const [chosenObservance, setChosenObservance] = useState<Holiday | null>(
     null
   );
-
-  useEffect(() => {
-    console.log("selectedTime", selectedTime);
-  }, [selectedTime]);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -133,10 +132,6 @@ export default function CustomCalendar({
   };
 
   useEffect(() => {
-    console.log("currentDate", currentDate);
-  }, [currentDate]);
-
-  useEffect(() => {
     const fetchHolidays = async () => {
       try {
         const data = await getHolidays("PL", 2024);
@@ -195,7 +190,7 @@ export default function CustomCalendar({
                   <div
                     key={date.toString()}
                     onClick={() => !disableOnClick && handleDateClick(date)}
-                    className={`w-8 h-8 flex items-center justify-center cursor-pointer rounded-full ${isOutsideCurrentMonth && "opacity-0"} ${isObservance && "text-gray-400"} ${disableOnClick ? "cursor-default text-gray-400" : "text-black"} ${isSelected ? "bg-purple-500 !text-white" : ""} ${isToday(date) ? "border border-blue-500" : ""}`}
+                    className={`w-8 h-8 flex items-center justify-center ${!disableOnClick && "cursor-pointer"} rounded-full ${isOutsideCurrentMonth && "opacity-0"} ${isObservance && "text-gray-400"} ${disableOnClick ? "cursor-default text-gray-400" : "text-black"} ${isSelected && "bg-purple-500 !text-white"} ${isToday(date) && "border border-think-purple"}`}
                   >
                     <span className="flex items-center justify-center">
                       {date.getDate()}
@@ -223,10 +218,7 @@ export default function CustomCalendar({
               <div
                 className={`rounded-lg border-solid border border-think-gray py-1 px-3 bg-white mb-2 cursor-pointer ${selectedTime === time && "outline outline-2 outline-think-purple"}`}
                 key={`key-${time}`}
-                onClick={() => {
-                  console.log("click");
-                  setSelectedTime(time);
-                }}
+                onClick={() => setSelectedTime(time)}
               >
                 {time}
               </div>
@@ -237,9 +229,10 @@ export default function CustomCalendar({
       {chosenObservance !== null && (
         <div className="mt-2 flex items-center">
           <Info />
-          <span className="ml-2">It is {chosenObservance.name}.</span>
+          <span className="pl-2">It is {chosenObservance.name}.</span>
         </div>
       )}
+      {chosenObservance === null && errors && <ErrorMessage label={errors} />}
     </div>
   );
 }

@@ -12,7 +12,6 @@ export const getHolidays = async (
         year,
       },
     });
-    console.log("response", response);
     return response.data;
   } catch (error) {
     console.error("Error fetching holidays:", error);
