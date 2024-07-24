@@ -1,46 +1,51 @@
-# Getting Started with Create React App
+# Welcome to my project!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hi! My name is Błażej Raducki. I hope that everything work fine, below I described interesting information about the project
 
-## Available Scripts
-
-In the project directory, you can run:
+# How to run project
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+maybe it will be also usefull:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### `npm install`
 
-### `npm test`
+## My Node and Npm version
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `Node: 18.17.1`
 
-### `npm run build`
+### `Npm: 6.14.4`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Api connection
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+For proper operation of the application, it is necessary to create an **.env** file and there create a variable **REACT_APP_API_KEY** with the value of the key to the API https://api-ninjas.com/api/holidays (the value of the key was given in the figma in the content of the recruitment task)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Possible implementation incompatibilities with figma
 
-### `npm run eject`
+I tried very hard to faithfully (every pixel) reproduce the design. However, always if only one person is working on something then there is a possible oversight, for which I am very sorry, but it was not done on purpose.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+What you can catch is sometimes the line-height is slightly different from that of the figma, this happens by using the parameter text-.... from tailwind (e.g., text-lg), which provides the correct font size and a very similar line-height value as the original.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In general, I mostly used tailwind's defaults, but for some values I implemented my own variables for styles (these are available in **tailwind.config.js**).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+**What's more**, fields of Input type have only validation for the number of characters, there can be numbers in them, for example. This was done because of the lack of clear information in the task content.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+**One last very important thing!**
+01.11.2024r. has a data type of National Holiday, not Observance, so it cannot be clicked according to the command (this is an example from figma)
 
-## Learn More
+{
+"country": "Poland",
+"iso": "PL",
+"year": 2024,
+"date": "2024-11-01",
+"day": "Friday",
+"name": "All Saints' Day",
+"type": "NATIONAL_HOLIDAY"
+}
+According to the command: Sundays and days that have type = “NATIONAL_HOLIDAY” there is no training, so these days should be blocked. After selecting a date that has type = “OBSERVANCE”, display information about the holiday.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+For this reason, it is impossible to click 01.11.2024
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Project online
+
+https://euphonious-gumption-6daa7c.netlify.app/
