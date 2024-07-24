@@ -16,6 +16,7 @@ module.exports = {
       },
       width: {
         "think-w": "26.625rem",
+        "think-sm-w": "21.375rem",
         "think-parcel-w": "4.75rem",
         "think-calendar-w": "20.375rem",
       },

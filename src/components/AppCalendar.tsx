@@ -154,10 +154,10 @@ export default function AppCalendar({
 
   return (
     <div className="flex flex-col my-1">
-      <div className="flex">
+      <div className="flex-col sm:flex-row flex">
         <div>
           <FieldHeader label={label} />
-          <div className="p-4 w-think-calendar-w h-think-calendar-h bg-white relative rounded-lg border-solid border border-think-gray">
+          <div className="p-4 w-full sm:w-think-calendar-w min-h-think-calendar-h bg-white relative rounded-lg border-solid border border-think-gray">
             <div className="flex items-center justify-between mb-2">
               <button
                 onClick={(e) => handleMonthChange(e, "prev")}
@@ -216,16 +216,18 @@ export default function AppCalendar({
           </div>
         </div>
         {selectedDate !== null && chosenObservance === null && (
-          <div className="ml-6">
+          <div className="sm:ml-6 mt-4 sm:mt-0">
             <FieldHeader label="time" />
-            {possibleTimes.map((time) => (
-              <TimeParcel
-                key={`key-${time}`}
-                time={time}
-                selectedTime={selectedTime}
-                onClick={() => setSelectedTime(time)}
-              />
-            ))}
+            <div className="flex flex-wrap gap-x-3 sm:block">
+              {possibleTimes.map((time) => (
+                <TimeParcel
+                  key={`key-${time}`}
+                  time={time}
+                  selectedTime={selectedTime}
+                  onClick={() => setSelectedTime(time)}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
