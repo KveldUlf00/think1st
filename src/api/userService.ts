@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-import { CountryCode, Holiday, Year } from "./types";
+import { CountryCode, Holiday, Year } from "../types/types";
 
 export const getHolidays = async (
   country: CountryCode,

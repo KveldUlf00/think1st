@@ -10,9 +10,7 @@ import SubmitButton from "../components/SubmitButton";
 import { postFormData } from "../api/userService";
 import { isValidEmail } from "../utils/emailValidation";
 import { combineDateTime } from "../utils/combineDateTime";
-import type { ErrorObject } from "../api/types";
-
-// TODO typy do jednego miejsca
+import type { ErrorObject } from "../types/types";
 
 export default function MainForm() {
   const [firstName, setFirstName] = useState("");
@@ -135,7 +133,7 @@ export default function MainForm() {
     }
 
     try {
-      const result = await postFormData(dataToSubmit);
+      await postFormData(dataToSubmit);
       enqueueSnackbar("Form data submitted successfully.", {
         variant: "success",
       });
@@ -148,6 +146,7 @@ export default function MainForm() {
         }
       );
     }
+    setIsSubmitting(false);
     resetFields();
   };
 
@@ -175,7 +174,7 @@ export default function MainForm() {
           errors={errors.lastName}
         />
         <AppInput
-          label="email"
+          label="email address"
           value={email}
           onChange={(e) => {
             setEmail(e.target.value);

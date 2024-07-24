@@ -17,15 +17,6 @@ export interface Holiday {
   year: number;
 }
 
-// export type PostFormData = {
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   age: number;
-//   photo: File;
-//   date: Date;
-// };
-
 export type ErrorObject = {
   firstName?: string | null;
   lastName?: string | null;
