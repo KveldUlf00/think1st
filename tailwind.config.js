@@ -14,6 +14,15 @@ module.exports = {
         "think-red": "#ED4545",
         "think-light-red": "#FEECEC",
       },
+      width: {
+        "think-w": "26.625rem",
+        "think-parcel-w": "4.75rem",
+        "think-calendar-w": "20.375rem",
+      },
+      height: {
+        "think-parcel-h": "2.875rem",
+        "think-calendar-h": "18.25rem",
+      },
     },
   },
   plugins: [],

@@ -1,27 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useSnackbar } from "notistack";
 
-import CustomInput from "../components/CustomInput";
-import CustomSlider from "../components/CustomSlider";
-import CustomUploader from "../components/CustomUploader";
-import CustomCalendar from "../components/CustomCalendar";
+import AppInput from "../components/AppInput";
+import AppSlider from "../components/AppSlider";
+import AppUploader from "../components/AppUploader";
+import AppCalendar from "../components/AppCalendar";
 import SubmitButton from "../components/SubmitButton";
 
+import { postFormData } from "../api/userService";
 import { isValidEmail } from "../utils/emailValidation";
+import { combineDateTime } from "../utils/combineDateTime";
 import type { ErrorObject } from "../api/types";
 
-// {errors.length > 0 && (
-//   <ul>
-//     {errors.map((error) => (
-//       <li
-//         key={error}
-//         className="bg-red-100 text-red-500 px-4 py-2 rounded"
-//       >
-//         {error}
-//       </li>
-//     ))}
-//   </ul>
-// )}
+// TODO typy do jednego miejsca
 
 export default function MainForm() {
   const [firstName, setFirstName] = useState("");
@@ -130,40 +121,40 @@ export default function MainForm() {
       return;
     }
 
-    const [hours, minutes] = selectedTime.split(":").map(Number);
-    const wholeDate = new Date(
-      Date.UTC(
-        selectedDate!.getUTCFullYear(),
-        selectedDate!.getUTCMonth(),
-        selectedDate!.getUTCDate() + 1,
-        hours,
-        minutes
-      )
-    );
+    const wholeDate = combineDateTime(selectedTime, selectedDate);
 
-    const dataToSubmit = {
-      firstName,
-      lastName,
-      email,
-      age,
-      photo,
-      wholeDate,
-    };
+    const dataToSubmit = new FormData();
+    dataToSubmit.append("firstName", firstName);
+    dataToSubmit.append("lastName", lastName);
+    dataToSubmit.append("email", email);
+    dataToSubmit.append("age", age.toString());
+    dataToSubmit.append("date", wholeDate.toISOString());
 
-    console.log("dataToSubmit", dataToSubmit);
+    if (photo instanceof File) {
+      dataToSubmit.append("photo", photo);
+    }
 
-    // TODO: submit to server
-    // ...
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const result = await postFormData(dataToSubmit);
+      console.log("Form data submitted successfully:", result);
+      enqueueSnackbar("Form data submitted successfully.", {
+        variant: "success",
+      });
+    } catch (error) {
+      console.error("Failed to submit form data:", error);
+      enqueueSnackbar("Failed to submit form data.", {
+        variant: "error",
+      });
+    }
     resetFields();
   };
 
   return (
-    <div className="w-1/4 mx-auto py-12">
-      <p className="text-2xl font-medium">Personal info</p>
+    <div className="w-think-w mx-auto mt-24 mb-32">
+      <p className="text-2xl font-medium mb-4">Personal info</p>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-2">
-        <CustomInput
+        <AppInput
           label="first name"
           value={firstName}
           onChange={(e) => {
@@ -172,7 +163,7 @@ export default function MainForm() {
           }}
           errors={errors.firstName}
         />
-        <CustomInput
+        <AppInput
           label="last name"
           value={lastName}
           onChange={(e) => {
@@ -181,7 +172,7 @@ export default function MainForm() {
           }}
           errors={errors.lastName}
         />
-        <CustomInput
+        <AppInput
           label="email"
           value={email}
           onChange={(e) => {
@@ -190,14 +181,14 @@ export default function MainForm() {
           }}
           errors={errors.email}
         />
-        <CustomSlider
+        <AppSlider
           label="age"
           value={age}
           onChange={setAge}
           min={8}
           max={100}
         />
-        <CustomUploader
+        <AppUploader
           label="photo"
           photo={photo}
           onChange={(file) => {
@@ -207,9 +198,9 @@ export default function MainForm() {
           errors={errors.photo}
         />
 
-        <p className="text-2xl font-medium">Your workout</p>
+        <p className="text-2xl font-medium mt-4">Your workout</p>
 
-        <CustomCalendar
+        <AppCalendar
           label="Date"
           selectedDate={selectedDate}
           setSelectedDate={(date) => {

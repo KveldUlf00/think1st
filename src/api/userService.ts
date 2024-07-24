@@ -18,3 +18,21 @@ export const getHolidays = async (
     throw error;
   }
 };
+
+export const postFormData = async (formData: FormData): Promise<unknown> => {
+  try {
+    const response = await axiosInstance.post(
+      "http://letsworkout.pl/submit",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    throw error;
+  }
+};

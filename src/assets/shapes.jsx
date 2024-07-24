@@ -1,4 +1,4 @@
-export const LeftArrow = () => (
+export const LeftArrowIcon = () => (
   <svg
     width="32"
     height="32"
@@ -13,7 +13,7 @@ export const LeftArrow = () => (
   </svg>
 );
 
-export const RightArrow = () => (
+export const RightArrowIcon = () => (
   <svg
     width="32"
     height="32"
@@ -28,7 +28,7 @@ export const RightArrow = () => (
   </svg>
 );
 
-export const Circle = () => (
+export const CircleIcon = () => (
   <svg
     className="animate-spin h-8 w-8 text-think-purple mx-auto mb-2"
     viewBox="0 0 24 24"
@@ -43,7 +43,7 @@ export const Circle = () => (
   </svg>
 );
 
-export const Info = () => (
+export const InfoIcon = () => (
   <svg
     width="16"
     height="16"
