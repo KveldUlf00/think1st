@@ -14,6 +14,7 @@ import {
 } from "date-fns";
 import { useSnackbar } from "notistack";
 
+import FieldHeader from "./FieldHeader";
 import { getHolidays } from "../api/userService";
 import { type Holiday, DateType } from "../api/types";
 import { Circle, Info, LeftArrow, RightArrow } from "../assets/shapes";
@@ -156,7 +157,7 @@ export default function CustomCalendar({
     <div className="flex flex-col my-1">
       <div className="flex">
         <div>
-          <span className="capitalize pb-1">{label}</span>
+          <FieldHeader label={label} />
           <div className="p-4 w-full bg-white relative rounded-lg border-solid border border-think-gray">
             <div className="flex items-center justify-between mb-2">
               <button
@@ -217,7 +218,7 @@ export default function CustomCalendar({
         </div>
         {selectedDate !== null && chosenObservance === null && (
           <div className="ml-4">
-            <span className="capitalize pb-1">Time</span>
+            <FieldHeader label="time" />
             {possibleTimes.map((time) => (
               <div
                 className={`rounded-lg border-solid border border-think-gray py-1 px-3 bg-white mb-2 cursor-pointer ${selectedTime === time && "outline outline-2 outline-think-purple"}`}

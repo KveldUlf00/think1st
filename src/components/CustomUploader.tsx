@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import FieldHeader from "./FieldHeader";
+
 type CustomUploaderType = {
   label: string;
   photo: File | null;
@@ -56,7 +58,7 @@ export default function CustomUploader({
 
   return (
     <div className="flex flex-col my-1">
-      <span className="capitalize pb-1">{label}</span>
+      <FieldHeader label={label} />
       <div
         className="w-full h-24 rounded-lg border-solid border border-think-gray flex items-center justify-center bg-white relative"
         onDrop={handleDrop}

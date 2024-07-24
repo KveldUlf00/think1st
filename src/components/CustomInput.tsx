@@ -1,3 +1,5 @@
+import FieldHeader from "./FieldHeader";
+
 type CustomInputType = {
   label: string;
   value: string;
@@ -16,7 +18,7 @@ export default function CustomInput({
 
   return (
     <div className="flex flex-col my-1">
-      <span className="capitalize pb-1">{label}</span>
+      <FieldHeader label={label} />
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
