@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import CustomInput from "../components/CustomInput";
 import CustomSlider from "../components/CustomSlider";
@@ -44,6 +44,18 @@ export default function MainForm() {
     setSelectedTime("");
     setIsSubmitting(false);
   };
+
+  const canSubmit = useMemo(() => {
+    return (
+      firstName !== "" &&
+      lastName !== "" &&
+      email !== "" &&
+      age !== null &&
+      photo !== null &&
+      selectedDate !== null &&
+      selectedTime !== ""
+    );
+  }, [firstName, lastName, email, age, photo, selectedDate, selectedTime]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -170,8 +182,8 @@ export default function MainForm() {
         />
         <button
           type="submit"
-          disabled={isSubmitting}
-          className="bg-think-purple hover:bg-think-dark-purple text-white disabled:bg-gray-500 mt-4 py-2 rounded"
+          disabled={!canSubmit || isSubmitting}
+          className="bg-think-purple hover:bg-think-dark-purple text-white disabled:bg-think-gray mt-4 py-2 px-4 rounded font-medium text-lg"
         >
           Send Application
         </button>

@@ -7,11 +7,9 @@ import { SnackbarProvider } from "notistack";
 // styles:
 // npx tailwindcss -i ./src/styles/index.css -o ./src/styles/output.css --watch
 
-// TODO in Age tooltip on the bottom
 // TODO mobile view
 // TODO form validation
 // TODO hide somewhere this secret key
-// TODO inactive submit
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
